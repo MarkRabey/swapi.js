@@ -34,20 +34,32 @@ const retrieveFormattedObject = (resource, id) => {
     const values = {};
 
     for (let property in schema.properties) {
+
       if (resourceNames.includes(property)) {
-        values[property] = [];
+        const linkedResourceName = getLinkedResourceName(resource, property);
+        values[property] = Data[property].filter(x => x.fields[linkedResourceName] && x.fields[linkedResourceName].includes(id))
+          .map(x => x.pk);
       } else {
         values[property] = object.fields[property]
       }
       
-    }
-    console.log(object);
-    console.log(values);
-    
-    return Data[resource].find(x => x.pk === id);
+    }   
+    return values;
   }
 
   return {};
 };
+
+const getLinkedResourceName = (resource, linkedTo) => {
+  if (resource === 'people' && linkedTo === 'films') {
+    return "characters";
+  } else if (resource === 'people' && linkedTo === 'planets') {
+    return "residents";
+  } else if (resource === 'planets' && linkedTo === 'people') {
+    return "homeworld";
+  }
+
+  return resource;
+}
 
 export { apiInfo, objectNote, retrieveFormattedObject };

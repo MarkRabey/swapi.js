@@ -75,7 +75,7 @@ server.route({
         results: Array.isArray(data) ? data : data.fields
       };
       
-      reply({ data, statusCode: 200 }).code(200);
+      reply({ result, statusCode: 200 }).code(200);
     },
     description: "Returns <code>resources</code> with specified <code>id</code>. If no <code>id</code> is included, returns all objects of type <code>resource</code>.",
     validate: {
